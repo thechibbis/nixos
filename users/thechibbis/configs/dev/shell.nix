@@ -1,0 +1,58 @@
+{
+  pkgs,
+  inputs,
+  outputs,
+  ...
+}: {
+  programs.bash = {
+    enable = true;
+    shellAliases = {
+      nvim = "nix run $HOME/dev/nvim";
+      nxr = "sudo nixos-rebuild switch --flake $HOME/dev/nixos#desktop";
+    };
+    initExtra = ''
+      eval "$(starship init bash)"
+    '';
+  };
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+    enableBashIntegration = true;
+  };
+  programs.zellij = {
+    enable = true;
+    enableBashIntegration = true;
+
+    settings = {
+      themes = {
+        rose-pine = {
+          "bg" = "#403d52";
+          "fg" = "#e0def4";
+          "red" = "#eb6f92";
+          "green" = "#31748f";
+          "blue" = "#9ccfd8";
+          "yellow" = "#f6c177";
+          "magenta" = "#c4a7e7";
+          "orange" = "#fe640b";
+          "cyan" = "#ebbcba";
+          "black" = "#26233a";
+          "white" = "#e0def4";
+        };
+      };
+
+      default_layout = "compact";
+
+      ui = {
+        pane_frames = {
+          rounded_corners = true;
+        };
+      };
+
+      theme = "rose-pine";
+    };
+  };
+}

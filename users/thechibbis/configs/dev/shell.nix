@@ -7,7 +7,6 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      nvim = "nix run $HOME/dev/nvim";
       nxr = "sudo nixos-rebuild switch --flake $HOME/dev/nixos#desktop";
     };
     initExtra = ''
@@ -45,6 +44,7 @@
       };
 
       default_layout = "compact";
+      pane_frames = false;
 
       ui = {
         pane_frames = {

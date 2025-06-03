@@ -56,6 +56,7 @@
     whatsapp-for-linux
     mupdf
     notion-app-enhanced
+    pavucontrol
 
     inputs.nvim-config.packages.${pkgs.system}.nvim
     nixd

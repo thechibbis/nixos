@@ -7,10 +7,8 @@
 
     shellIntegration.enableBashIntegration = true;
 
-    themeFile = "rose-pine";
-
     settings = {
-      background_opacity = 0.8;
+      background_opacity = 0.6;
     };
   };
   programs.alacritty = {

@@ -8,6 +8,8 @@
     enable = true;
     shellAliases = {
       nxr = "sudo nixos-rebuild switch --flake $HOME/dev/nixos#desktop";
+      bacon-ls = "bacon";
+      rn = "nix flake init --template github:the-nix-way/dev-templates#rust-toolchain";
     };
     initExtra = ''
       eval "$(starship init bash)"

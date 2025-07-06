@@ -63,5 +63,21 @@
         ];
       };
     };
+    # My ArchWSL config
+    homeConfigurations = {
+        # Name this configuration whatever you like. Let's call it 'archwsl'.
+        archwsl = home-manager.lib.homeManagerConfiguration {
+       # Specify the system architecture for your WSL instance.
+       pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+       # Pass flake inputs and outputs to your modules.
+       extraSpecialArgs = { inherit inputs outputs; };
+
+       # Re-use your existing home-manager configuration file!
+       modules = [
+         ./users/thechibbis_wsl/home.nix
+        ];
+      };
+    };
   };
 }

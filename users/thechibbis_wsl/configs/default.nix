@@ -1,0 +1,5 @@
+{
+    imports = [
+        ../../thechibbis/configs/dev
+    ];
+}

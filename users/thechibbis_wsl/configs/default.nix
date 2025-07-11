@@ -1,5 +1,5 @@
 {
-    imports = [
-        ../../thechibbis/configs/dev
-    ];
+  imports = [
+    ../../thechibbis/configs/dev
+  ];
 }

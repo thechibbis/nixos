@@ -639,11 +639,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1751832321,
-        "narHash": "sha256-MRbjzJm1cparg3yLVp5bhf38SsqzyVuyjouPWiTeXm4=",
+        "lastModified": 1752200000,
+        "narHash": "sha256-LnE5L9FzNwgvTdQ8JqCeZF/toSyTsH6XFELp7llYoxg=",
         "owner": "thechibbis",
         "repo": "nvim.nix",
-        "rev": "faf07282ba594fd92b89e640618656836cff20c6",
+        "rev": "6fbd090ab236e1702f4d9eae6b6f7d87fa2368e2",
         "type": "github"
       },
       "original": {

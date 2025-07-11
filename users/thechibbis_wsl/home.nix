@@ -56,6 +56,7 @@
     nil
     niv
     alejandra
+    elixir-ls
 
     jetbrains-mono
     fira-code

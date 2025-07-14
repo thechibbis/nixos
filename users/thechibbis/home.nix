@@ -63,6 +63,7 @@
     nil
     niv
     alejandra
+    devenv
 
     inputs.zen-browser.packages.${pkgs.system}.default
 

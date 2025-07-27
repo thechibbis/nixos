@@ -14,19 +14,24 @@
     initExtra = ''
       eval "$(starship init bash)"
     '';
+    bashrcExtra = ''
+      export PATH="$PATH:$HOME/.local/bin:$HOME/.npm-global/bin"
+    '';
   };
   programs.starship = {
     enable = true;
     enableBashIntegration = true;
   };
+
+  services.lorri.enable = true;
   programs.direnv = {
     enable = true;
     enableBashIntegration = true;
   };
+
   programs.zellij = {
     enable = true;
     enableBashIntegration = true;
-
     settings = {
       themes = {
         rose-pine = {

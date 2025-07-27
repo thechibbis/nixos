@@ -29,6 +29,8 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
+      inputs.emacs-config.overlay."x86_64-linux"
+
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
 
@@ -57,13 +59,31 @@
     mupdf
     notion-app-enhanced
     pavucontrol
+    easyeffects
+    hoppscotch
+    libreoffice-qt6
+    qbittorrent
+    stremio
 
     inputs.nvim-config.packages.${pkgs.system}.nvim
+    python313Packages.weasyprint
+
     nixd
     nil
     niv
     alejandra
     devenv
+    pinentry-gtk2
+
+    vscode-fhs
+    obsidian
+
+    biome
+    bun
+
+    fd
+    ripgrep
+    gnumake
 
     inputs.zen-browser.packages.${pkgs.system}.default
 
@@ -75,6 +95,8 @@
     font-awesome
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
+    nerd-fonts.sauce-code-pro
+    nerd-fonts.fantasque-sans-mono
   ];
 
   home.pointerCursor = {
@@ -82,7 +104,7 @@
     # x11.enable = true;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
-    size = 13;
+    size = 10;
   };
 
   gtk = {
@@ -106,11 +128,25 @@
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
+
+  programs.gpg.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
   programs.git = {
     enable = true;
     userName = "Guilherme Menezes";
     userEmail = "guilhermedeoliveira.menezes@gmail.com";
+
+    signing = {
+      key = "0x6F4932993A5F3C56";
+      signByDefault = true;
+    };
   };
+
+  programs.git-credential-oauth.enable = true;
 
   fonts.fontconfig.enable = true;
 

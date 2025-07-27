@@ -11,6 +11,16 @@
 
   programs.wofi.enable = true;
 
+  services.mako = {
+    enable = true;
+    settings = {
+      background-color = "#26233a";
+      text-color = "#e0def4";
+      border-color = "#524f67";
+      progress-color = "over #31748f";
+    };
+  };
+
   services.hyprpaper = {
     enable = true;
     settings = {
@@ -34,6 +44,7 @@
 
     settings = {
       "$mod" = "SUPER";
+      # "windowrulev2" = "opacity 0.7, class:^(Emacs)$";
 
       exec-once = [
         "waybar"
@@ -65,15 +76,15 @@
         rounding_power = 3;
         blur = {
           enabled = true;
-          brightness = 1.0;
+          brightness = 0.8;
           contrast = 1.0;
           noise = 0.01;
 
-          vibrancy = 0.2;
-          vibrancy_darkness = 0.5;
+          vibrancy = 0.8;
+          vibrancy_darkness = 0.7;
 
-          passes = 4;
-          size = 7;
+          passes = 2;
+          size = 2;
 
           popups = true;
           popups_ignorealpha = 0.2;
@@ -103,10 +114,10 @@
           "$mod, P, pseudo,"
           "$mod ALT, ,resizeactive,"
 
-          "$mod, Return, exec, kitty"
+          "$mod, Return, exec, ghostty"
 
           "$mod, D, exec, wofi --show drun"
-          "$mod, F, exec, zen"
+          "$mod, E, exec, zen"
         ]
         ++ (
           # workspaces

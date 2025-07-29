@@ -1,12 +1,19 @@
 { pkgs, inputs, ... }:
-
 {
-  services.emacs = {
+  services.emacs.enable = true;
+  programs.doom-emacs = {
     enable = true;
-    package = pkgs.emacs-custom;
-  };
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-custom;
+    doomDir = ./doom.d;
+    extraPackages = epkgs: [
+      epkgs.vterm
+      epkgs.treesit-grammars.with-all-grammars
+
+      pkgs.ispell
+      pkgs.rust-analyzer
+      pkgs.gopls
+      pkgs.nil
+      pkgs.nixfmt
+      pkgs.yaml-language-server
+    ];
   };
 }

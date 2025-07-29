@@ -15,6 +15,7 @@
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
+    inputs.nix-doom-emacs-unstraightened.homeModule
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
@@ -29,7 +30,7 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
-      inputs.emacs-config.overlay."x86_64-linux"
+      # inputs.emacs-config.overlay."x86_64-linux"
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -56,7 +57,7 @@
     discord
     spotify
     whatsapp-for-linux
-    mupdf
+    foliate
     notion-app-enhanced
     pavucontrol
     easyeffects
@@ -64,13 +65,13 @@
     libreoffice-qt6
     qbittorrent
     stremio
+    calibre
+    mpv
 
     inputs.nvim-config.packages.${pkgs.system}.nvim
     python313Packages.weasyprint
 
     nixd
-    nil
-    niv
     alejandra
     devenv
     pinentry-gtk2

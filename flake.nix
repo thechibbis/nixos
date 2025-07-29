@@ -14,7 +14,10 @@
     hyprland.url = "github:hyprwm/Hyprland";
     nvim-config.url = "github:thechibbis/nvim.nix";
 
-    emacs-config.url = "path:/home/thechibbis/dev/emacs.nix";
+    nix-doom-emacs-unstraightened.url = "github:marienz/nix-doom-emacs-unstraightened";
+    nix-doom-emacs-unstraightened.inputs.nixpkgs.follows = "";
+
+    # emacs-config.url = "path:/home/thechibbis/dev/emacs.nix";
   };
 
   outputs = {

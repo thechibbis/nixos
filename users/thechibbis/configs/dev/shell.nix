@@ -31,7 +31,6 @@
 
   programs.zellij = {
     enable = true;
-    enableBashIntegration = true;
     settings = {
       themes = {
         rose-pine = {

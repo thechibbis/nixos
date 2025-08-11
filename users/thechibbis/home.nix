@@ -15,7 +15,6 @@
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
-    inputs.nix-doom-emacs-unstraightened.homeModule
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
@@ -30,7 +29,9 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
-      # inputs.emacs-config.overlay."x86_64-linux"
+
+      # inputs.emacs-overlay.overlays.default
+      inputs.emacs-config.overlay."x86_64-linux"
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -58,7 +59,6 @@
     spotify
     whatsapp-for-linux
     foliate
-    notion-app-enhanced
     pavucontrol
     easyeffects
     hoppscotch
@@ -67,6 +67,8 @@
     stremio
     calibre
     mpv
+    gimp3
+    davinci-resolve
 
     inputs.nvim-config.packages.${pkgs.system}.nvim
     python313Packages.weasyprint
@@ -88,16 +90,26 @@
 
     inputs.zen-browser.packages.${pkgs.system}.default
 
-    wl-clipboard
-
     jetbrains-mono
     fira-code
 
     font-awesome
+    inter
+    nerd-fonts.iosevka
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nerd-fonts.fantasque-sans-mono
+
+    # exwm
+    feh
+    nm-tray
+    pasystray
+    blueman
+    gtk3
+    dunst
+    picom
+    flameshot
   ];
 
   home.pointerCursor = {
@@ -151,7 +163,8 @@
 
   fonts.fontconfig.enable = true;
 
-  home.file.".bay.JPG".source = ../../assets/bay.JPG;
+  home.file.".wallpaper.png".source = ../../assets/.wallpaper.png;
+  home.file.".wallpaper.jpg".source = ../../assets/wallpaper.jpg;
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";

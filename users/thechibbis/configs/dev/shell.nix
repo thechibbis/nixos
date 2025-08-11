@@ -16,6 +16,7 @@
     '';
     bashrcExtra = ''
       export PATH="$PATH:$HOME/.local/bin:$HOME/.npm-global/bin"
+      export LSP_USE_PLISTS=true
     '';
   };
   programs.starship = {

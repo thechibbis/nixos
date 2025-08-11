@@ -57,13 +57,6 @@
     niv
     alejandra
     devenv
-
-    jetbrains-mono
-    fira-code
-
-    font-awesome
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
   ];
 
   # Enable home-manager and git

@@ -39,8 +39,19 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    devices = [ "nodev" ];
+    efiSupport = true;
+    useOSProber = true;
+  };
+
+  # boot.lanzaboote = {
+  #   enable = true;
+  #   pkiBundle = "/var/lib/sbctl";
+  # };
 
   networking.hostName = "desktop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -72,17 +83,6 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm = {
-    enable = true;
-    wayland = true;
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "br";
-    variant = "";
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -124,19 +124,13 @@
   # programs.hyprland.enable = true;
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
 
-  # enable sway window manager
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -160,6 +154,9 @@
     #  wget
     openssl
     openssl.dev
+    vulkan-tools
+    mesa-demos
+    sbctl
   ];
 
   virtualisation = {
@@ -183,7 +180,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
 
   # Open ports in the firewall.
@@ -191,6 +188,86 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  services.xserver = {
+    enable = true;
+
+    displayManager.gdm = {
+      enable = true;
+    };
+
+    xkb = {
+      layout = "br";
+      variant = "";
+    };
+
+    videoDrivers = ["nvidia"];
+
+    desktopManager = {
+      xterm.enable = false;
+      session = lib.singleton {
+        name = "exwm";
+        start = ''
+        xsetroot -cursor_name left_ptr
+        export _JAVA_AWT_WM_NONREPARENTING=1
+        XDG_DATA_DIRS+=:~/.local/share
+        ${pkgs.gnome-settings-daemon}/libexec/gsd-xsettings &
+
+        exec dbus-launch --exit-with-session emacs -mm
+        '';
+      };
+    };
+  };
+
+
+  hardware.steam-hardware.enable = true;
+  programs = {
+    # Enable Steam Game
+    # Gamescope session inside game.
+    # gamemoderun gamescope -W 2560 -H 1440 -r 60 --mangoapp -f -b --force-grab-cursor -- %command%
+    # dont use -F fsr, if its crashing on launch.
+    # dont use -e, game will be hidden.
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true;
+      dedicatedServer.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+      gamescopeSession = {
+        enable = true;
+      };
+      package = pkgs.steam.override {
+        extraPkgs = pkgs':
+          with pkgs'; [
+            xorg.libXcursor
+            xorg.libXi
+            xorg.libXinerama
+            xorg.libXScrnSaver
+            libpng
+            libpulseaudio
+            libvorbis
+            stdenv.cc.cc.lib
+            libkrb5
+            keyutils
+          ];
+      };
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
+    };
+    gamemode = {
+      enable = true;
+      settings = {};
+      enableRenice = true;
+    };
+  };
+
+  programs.virt-manager.enable = true;
+
+  users.groups.libvirtd.members = ["thechibbis"];
+
+  virtualisation.libvirtd.enable = true;
+
+  virtualisation.spiceUSBRedirection.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

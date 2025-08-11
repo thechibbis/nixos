@@ -181,6 +181,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  programs.sway.enable = true;
 
 
   # Open ports in the firewall.

@@ -29,10 +29,6 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
-
-      # inputs.emacs-overlay.overlays.default
-      inputs.emacs-config.overlay."x86_64-linux"
-
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
 
@@ -100,16 +96,6 @@
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nerd-fonts.fantasque-sans-mono
-
-    # exwm
-    feh
-    nm-tray
-    pasystray
-    blueman
-    gtk3
-    dunst
-    picom
-    flameshot
   ];
 
   home.pointerCursor = {

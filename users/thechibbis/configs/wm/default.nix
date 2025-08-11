@@ -1,6 +1,5 @@
 {
   imports = [
-    ./dev
-    ./wm
+    ./sway.nix
   ];
 }

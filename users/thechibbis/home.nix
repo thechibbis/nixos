@@ -1,13 +1,6 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
+{ inputs, outputs, lib, config, pkgs, ... }: {
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -29,6 +22,8 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
 
+      inputs.emacs-overlay.overlays.default
+
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
 
@@ -41,6 +36,7 @@
     ];
     config = {
       allowUnfree = true;
+      android_sdk.accept_license = true;
     };
   };
 
@@ -57,7 +53,7 @@
     foliate
     pavucontrol
     easyeffects
-    hoppscotch
+    postman
     libreoffice-qt6
     qbittorrent
     stremio
@@ -66,7 +62,6 @@
     gimp3
     davinci-resolve
 
-    inputs.nvim-config.packages.${pkgs.system}.nvim
     python313Packages.weasyprint
 
     nixd
@@ -96,6 +91,38 @@
     nerd-fonts.fira-code
     nerd-fonts.sauce-code-pro
     nerd-fonts.fantasque-sans-mono
+
+    emacs
+    inputs.nvim-config.packages.${pkgs.system}.nvim
+    jetbrains.idea-community-bin
+
+    gopls
+    gomodifytags
+    gotests
+    gore
+    nixfmt
+    python3
+    black
+    isort
+    pipenv
+    nose2pytest
+    rust-analyzer
+    shfmt
+    shellcheck
+    tidyp
+    stylelint
+    nodejs
+    nodePackages.npm
+    bun
+    cmake
+    dockfmt
+    clang
+    llvm
+    libtool
+    pandoc
+    openjdk
+    kotlin-language-server
+    (hunspellWithDicts [ hunspellDicts.pt-br hunspellDicts.en-us ])
   ];
 
   home.pointerCursor = {
@@ -103,7 +130,7 @@
     # x11.enable = true;
     package = pkgs.bibata-cursors;
     name = "Bibata-Modern-Classic";
-    size = 10;
+    size = 20;
   };
 
   gtk = {
@@ -149,7 +176,7 @@
 
   fonts.fontconfig.enable = true;
 
-  home.file.".wallpaper.png".source = ../../assets/.wallpaper.png;
+  home.file.".wallpaper.png".source = ../../assets/wallpaper.png;
   home.file.".wallpaper.jpg".source = ../../assets/wallpaper.jpg;
 
   # Nicely reload system units when changing configs

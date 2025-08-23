@@ -1,9 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
+{ pkgs, config, lib, ... }: {
   services.mako = {
     enable = true;
     settings = {
@@ -16,12 +11,12 @@
 
   wayland.windowManager.sway = {
     enable = true;
-    extraOptions = ["--unsupported-gpu"];
+    extraOptions = [ "--unsupported-gpu" ];
     extraSessionCommands = ''
       export SDL_VIDEODRIVER=wayland
       # needs qt5.qtwayland in systemPackages
-      export QT_QPA_PLATFORM=wayland
-      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+      # export QT_QPA_PLATFORM=wayland
+      # export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
       export _JAVA_AWT_WM_NONREPARENTING=1
     '';
 
@@ -29,14 +24,17 @@
       modifier = "Mod4";
       terminal = "ghostty";
 
-      output = {
-        HDMI-A-1 = {
-          resolution = "3840x2160@60hz";
-        };
-      };
+      output = { HDMI-A-1 = { resolution = "3840x2160@60hz"; }; };
+
+      startup = [{
+        command = "swaybg -o HDMI-A-1 -i ~/.wallpaper.png";
+        always = true;
+      }];
 
       input."*" = {
         xkb_layout = "br";
+        repeat_delay = "400";
+        repeat_rate = "50";
       };
 
       window = {
@@ -44,23 +42,27 @@
         border = 1;
       };
 
-      bars = [
-        {
-          fonts = {
-            names = ["JetBrains Mono"];
-            size = 7.0;
-          };
-          statusCommand = "${pkgs.i3status}/bin/i3status";
-         }
-      ];
+      bars = [{
+        fonts = {
+          names = [ "JetBrains Mono" ];
+          size = 7.0;
+        };
+        statusCommand = "${pkgs.i3status}/bin/i3status";
+      }];
 
-      keybindings = let
-        modifier = config.wayland.windowManager.sway.config.modifier;
-      in
-        lib.mkOptionDefault {
+      keybindings =
+        let modifier = config.wayland.windowManager.sway.config.modifier;
+        in lib.mkOptionDefault {
           "${modifier}+q" = "kill";
-          "${modifier}+Shift+s" = "exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area";
+          "${modifier}+Shift+s" =
+            "exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area";
         };
     };
+
+    extraConfig = ''
+      for_window [class="Emacs"] opacity 0.9
+    '';
   };
+
+  home.packages = with pkgs; [ swaybg swayimg ];
 }

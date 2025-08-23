@@ -1,22 +1,10 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{
-  inputs,
-  outputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-    };
-  };
+{ inputs, outputs, lib, config, pkgs, ... }: {
+  nixpkgs = { config = { allowUnfree = true; }; };
 
-  nix = let
-    flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
+  nix = let flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
     settings = {
       experimental-features = "nix-command flakes";
@@ -25,13 +13,15 @@
       # substituters = ["https://hyprland.cachix.org"];
       # trusted-substituters = ["https://hyprland.cachix.org"];
       # trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-      trusted-users = ["root" "thechibbis"];
+      trusted-users = [ "root" "thechibbis" ];
     };
 
     # Opinionated: make flake registry and nix path match flake inputs
-    registry = lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs;
+    registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
+
+  nixpkgs.config = { android_sdk.accept_license = true; };
 
   imports = [
     # Include the results of the hardware scan.
@@ -101,6 +91,17 @@
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+    extraConfig = {
+      pipewire = {
+        "10-config" = {
+          "context.properties" = {
+            "default.clock.rate" = 192000;
+            "default.clock.allowed-rates" =
+              [ 44100 48000 88200 96000 176400 192000 352800 384000 ];
+          };
+        };
+      };
+    };
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -110,7 +111,7 @@
   users.users.thechibbis = {
     isNormalUser = true;
     description = "Guilherme Menezes";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = [ "networkmanager" "wheel" "kvm" ];
     packages = with pkgs; [
       kdePackages.kate
       kubernetes
@@ -126,9 +127,7 @@
   services.gnome.gnome-keyring.enable = true;
 
   # Enable OpenGL
-  hardware.graphics = {
-    enable = true;
-  };
+  hardware.graphics = { enable = true; };
 
   # Load nvidia driver for Xorg and Wayland
 
@@ -157,6 +156,20 @@
     vulkan-tools
     mesa-demos
     sbctl
+
+    kdePackages.discover
+    kdePackages.kcalc # Calculator
+    kdePackages.kcharselect # Tool to select and copy special characters from all installed fonts
+    kdePackages.kcolorchooser # A small utility to select a color
+    haruna # Open source video player built with Qt/QML and libmpv
+    wayland-utils # Wayland utilities
+    wl-clipboard # Command-line copy/paste utilities for Wayland
+
+    android-studio-full
+    nss
+    qemu
+    qt6.qtwayland
+    qt5.qtwayland
   ];
 
   virtualisation = {
@@ -183,6 +196,15 @@
   services.openssh.enable = true;
   programs.sway.enable = true;
 
+  services = {
+    xserver = {
+      displayManager.gdm = {
+        enable = true;
+        wayland = true;
+      };
+      desktopManager.gnome.enable = true;
+    };
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -193,33 +215,17 @@
   services.xserver = {
     enable = true;
 
-    displayManager.gdm = {
-      enable = true;
-    };
-
     xkb = {
       layout = "br";
       variant = "";
     };
 
-    videoDrivers = ["nvidia"];
-
-    desktopManager = {
-      xterm.enable = false;
-      session = lib.singleton {
-        name = "exwm";
-        start = ''
-        xsetroot -cursor_name left_ptr
-        export _JAVA_AWT_WM_NONREPARENTING=1
-        XDG_DATA_DIRS+=:~/.local/share
-        ${pkgs.gnome-settings-daemon}/libexec/gsd-xsettings &
-
-        exec dbus-launch --exit-with-session emacs -mm
-        '';
-      };
-    };
+    videoDrivers = [ "nvidia" ];
   };
 
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = [ "thechibbis" ];
+  virtualisation.libvirtd.enable = true;
 
   hardware.steam-hardware.enable = true;
   programs = {
@@ -233,9 +239,7 @@
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
-      gamescopeSession = {
-        enable = true;
-      };
+      gamescopeSession = { enable = true; };
       package = pkgs.steam.override {
         extraPkgs = pkgs':
           with pkgs'; [
@@ -251,24 +255,14 @@
             keyutils
           ];
       };
-      extraCompatPackages = with pkgs; [
-        proton-ge-bin
-      ];
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
     };
     gamemode = {
       enable = true;
-      settings = {};
+      settings = { };
       enableRenice = true;
     };
   };
-
-  programs.virt-manager.enable = true;
-
-  users.groups.libvirtd.members = ["thechibbis"];
-
-  virtualisation.libvirtd.enable = true;
-
-  virtualisation.spiceUSBRedirection.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

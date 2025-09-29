@@ -165,7 +165,6 @@
     wayland-utils # Wayland utilities
     wl-clipboard # Command-line copy/paste utilities for Wayland
 
-    android-studio-full
     nss
     qemu
     qt6.qtwayland
@@ -194,7 +193,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  programs.sway.enable = true;
+  programs.hyprland.enable = true;
 
   services = {
     xserver = {
@@ -202,7 +201,6 @@
         enable = true;
         wayland = true;
       };
-      desktopManager.gnome.enable = true;
     };
   };
 

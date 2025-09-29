@@ -15,8 +15,7 @@
 
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
-    aagl.url = "github:ezKEa/aagl-gtk-on-nix/release-25.05";
-    aagl.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:

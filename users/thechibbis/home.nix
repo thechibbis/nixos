@@ -60,7 +60,6 @@
     calibre
     mpv
     gimp3
-    davinci-resolve
 
     python313Packages.weasyprint
 
@@ -94,7 +93,6 @@
 
     emacs
     inputs.nvim-config.packages.${pkgs.system}.nvim
-    jetbrains.idea-community-bin
 
     gopls
     gomodifytags
@@ -120,8 +118,6 @@
     llvm
     libtool
     pandoc
-    openjdk
-    kotlin-language-server
     (hunspellWithDicts [ hunspellDicts.pt-br hunspellDicts.en-us ])
   ];
 

@@ -4,6 +4,7 @@
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
+    inputs.nix-doom-emacs-unstraightened.homeModule
     inputs.nvim-config.homeModules.default
 
     # Or modules exported from other flakes (such as nix-colors):
@@ -62,6 +63,7 @@
     gimp3
 
     python313Packages.weasyprint
+    pkgs.unstable.codex
 
     nixd
     alejandra
@@ -69,9 +71,10 @@
     pinentry-gtk2
 
     vscode-fhs
+    zed-editor-fhs
     obsidian
+    dbeaver-bin
 
-    biome
     bun
 
     fd
@@ -91,8 +94,9 @@
     nerd-fonts.sauce-code-pro
     nerd-fonts.fantasque-sans-mono
 
-    emacs
     inputs.nvim-config.packages.${pkgs.system}.nvim
+
+    pkgs.unstable.biome
 
     gopls
     gomodifytags
@@ -117,7 +121,16 @@
     clang
     llvm
     libtool
+    emacs-lsp-booster
     pandoc
+    pkgs.unstable.tailwindcss-language-server
+    typescript-language-server
+    eslint_d
+    prettierd
+    eslint
+    nodePackages.prettier
+    typescript
+    vtsls
     (hunspellWithDicts [ hunspellDicts.pt-br hunspellDicts.en-us ])
   ];
 
@@ -163,9 +176,25 @@
     userEmail = "guilhermedeoliveira.menezes@gmail.com";
 
     signing = {
-      key = "0x6F4932993A5F3C56";
+      key = "0x14CD4D5762BF27F9";
       signByDefault = true;
     };
+  };
+
+  programs.obs-studio = {
+    enable = true;
+
+    # optional Nvidia hardware acceleration
+    package = (pkgs.obs-studio.override { cudaSupport = true; });
+
+    plugins = with pkgs.obs-studio-plugins; [
+      wlrobs
+      obs-backgroundremoval
+      obs-pipewire-audio-capture
+      obs-vaapi # optional AMD hardware acceleration
+      obs-gstreamer
+      obs-vkcapture
+    ];
   };
 
   programs.git-credential-oauth.enable = true;

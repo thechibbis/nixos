@@ -1,15 +1,12 @@
-{
-  pkgs,
-  inputs,
-  outputs,
-  ...
-}: {
+{ pkgs, inputs, outputs, ... }: {
   programs.bash = {
     enable = true;
     shellAliases = {
-      nxr = "sudo nixos-rebuild switch --flake $HOME/dev/nixos#desktop";
+      nxr =
+        "sudo NIXPKGS_ALLOW_UNFREE=1 nixos-rebuild switch --flake $HOME/dev/nixos#desktop --impure";
       hmr = "home-manager switch --flake $HOME/dev/nixos#archwsl";
-      rn = "nix flake init --template github:the-nix-way/dev-templates#rust-toolchain";
+      rn =
+        "nix flake init --template github:the-nix-way/dev-templates#rust-toolchain";
     };
     initExtra = ''
       eval "$(starship init bash)"
@@ -52,11 +49,7 @@
       default_layout = "compact";
       pane_frames = false;
 
-      ui = {
-        pane_frames = {
-          rounded_corners = true;
-        };
-      };
+      ui = { pane_frames = { rounded_corners = true; }; };
 
       theme = "rose-pine";
     };

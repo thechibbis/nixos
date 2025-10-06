@@ -1,6 +1,1 @@
-{
-  imports = [
-    ./alacritty.nix
-    ./shell.nix
-  ];
-}
+{ imports = [ ./alacritty.nix ./shell.nix ./emacs.nix ]; }

@@ -11,8 +11,10 @@
     zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
 
-    nvim-config.url = "github:thechibbis/nvim.nix";
+    nvim-config.url = "path:/home/thechibbis/dev/nvim.nix";
 
+    nix-doom-emacs-unstraightened.url =
+      "github:marienz/nix-doom-emacs-unstraightened/lsp-use-plists";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
 
     hyprland.url = "github:hyprwm/Hyprland";
@@ -44,8 +46,6 @@
         desktop = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            inputs.aagl.nixosModules.default
-
             ./hosts/desktop/configuration.nix
 
             home-manager.nixosModules.home-manager
@@ -57,14 +57,6 @@
               };
             }
           ];
-        };
-      };
-
-      homeConfigurations = {
-        archwsl = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./users/thechibbis_wsl/home.nix ];
         };
       };
     };

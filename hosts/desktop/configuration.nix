@@ -2,18 +2,19 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { inputs, outputs, lib, config, pkgs, ... }: {
-  nixpkgs = { config = { allowUnfree = true; }; };
-
   nix = let flakeInputs = lib.filterAttrs (_: lib.isType "flake") inputs;
   in {
     settings = {
       experimental-features = "nix-command flakes";
       nix-path = config.nix.nixPath;
 
-      # substituters = ["https://hyprland.cachix.org"];
-      # trusted-substituters = ["https://hyprland.cachix.org"];
-      # trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+      substituters = [ "https://hyprland.cachix.org" ];
+      trusted-substituters = [ "https://hyprland.cachix.org" ];
+      trusted-public-keys = [
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      ];
       trusted-users = [ "root" "thechibbis" ];
+
     };
 
     # Opinionated: make flake registry and nix path match flake inputs
@@ -21,7 +22,10 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  nixpkgs.config = { android_sdk.accept_license = true; };
+  nixpkgs.config = {
+    android_sdk.accept_license = true;
+    allowUnfree = true;
+  };
 
   imports = [
     # Include the results of the hardware scan.
@@ -29,14 +33,14 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
-    enable = true;
-    devices = [ "nodev" ];
-    efiSupport = true;
-    useOSProber = true;
-  };
+  # boot.loader.grub = {
+  #   enable = true;
+  #   devices = [ "nodev" ];
+  #   efiSupport = true;
+  #   useOSProber = true;
+  # };
 
   # boot.lanzaboote = {
   #   enable = true;
@@ -122,7 +126,7 @@
     ];
   };
 
-  # programs.hyprland.enable = true;
+  programs.hyprland.enable = true;
   security.polkit.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
@@ -193,7 +197,6 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  programs.hyprland.enable = true;
 
   services = {
     xserver = {
@@ -261,6 +264,14 @@
       enableRenice = true;
     };
   };
+
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
+
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [ ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
